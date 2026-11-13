@@ -1,0 +1,336 @@
+{
+  "01_tray": {
+    "valid": true,
+    "solids": 1,
+    "volume_mm3": 216846,
+    "size_mm": [
+      190.0,
+      180.0,
+      60.0
+    ]
+  },
+  "02_front_panel": {
+    "valid": true,
+    "solids": 1,
+    "volume_mm3": 76361,
+    "size_mm": [
+      190.0,
+      180.0,
+      9.0
+    ]
+  },
+  "03_60deg_stand": {
+    "valid": true,
+    "solids": 1,
+    "volume_mm3": 588489,
+    "size_mm": [
+      210.0,
+      200.0,
+      182.04
+    ]
+  },
+  "04_speaker_cassette": {
+    "valid": true,
+    "solids": 1,
+    "volume_mm3": 4012,
+    "size_mm": [
+      59.0,
+      41.0,
+      7.5
+    ]
+  },
+  "05_mic_fit_coupon_OPTIONAL": {
+    "valid": true,
+    "solids": 1,
+    "volume_mm3": 3244,
+    "size_mm": [
+      26.0,
+      38.0,
+      9.0
+    ]
+  },
+  "06_snap_receiver_TEST": {
+    "valid": true,
+    "solids": 1,
+    "volume_mm3": 10432,
+    "size_mm": [
+      48.0,
+      76.0,
+      3.0
+    ]
+  },
+  "07_snap_base_TEST": {
+    "valid": true,
+    "solids": 1,
+    "volume_mm3": 13115,
+    "size_mm": [
+      48.0,
+      90.0,
+      15.0
+    ]
+  },
+  "08_hex_socket_TEST": {
+    "valid": true,
+    "solids": 1,
+    "volume_mm3": 4429,
+    "size_mm": [
+      50.0,
+      16.0,
+      11.0
+    ]
+  },
+  "assembly_overlap_mm3": {
+    "tray/front_panel": 0.0,
+    "tray/stand": 0.0,
+    "tray/speaker_cassette": 0.0,
+    "front_panel/stand": 0.0,
+    "front_panel/speaker_cassette": 0.0,
+    "stand/speaker_cassette": 0.0
+  },
+  "physical_fit_tested": false,
+  "nominal_audio_envelope_overlap_mm3": {
+    "mic_pcb_envelope/tray": 0.0,
+    "mic_pcb_envelope/lid": 0.0,
+    "mic_pcb_envelope/cassette": 0.0,
+    "mic_capsule/tray": 0.0,
+    "mic_capsule/lid": 0.0,
+    "mic_capsule/cassette": 0.0,
+    "speaker_max_envelope/tray": 0.0,
+    "speaker_max_envelope/lid": 0.0,
+    "speaker_max_envelope/cassette": 0.0
+  },
+  "rotated_pcb_envelope_overlap_mm3": 0.0,
+  "pcb_mount_centers_case_mm": [
+    [
+      67.5,
+      62.5
+    ],
+    [
+      18.5,
+      62.5
+    ],
+    [
+      67.5,
+      120.5
+    ],
+    [
+      18.5,
+      120.5
+    ]
+  ],
+  "window_orientation": "portrait",
+  "opening_is_glass_fit_verified": false,
+  "assembled_size_mm": [
+    210.0,
+    203.56,
+    205.39
+  ],
+  "screen_angle_to_desk_deg": 60.0,
+  "internal_partitions": false,
+  "layout": "left PCB + portrait LCD; right speaker above microphone",
+  "cable_routes": [
+    {
+      "id": "CN6",
+      "role": "5V_POWER",
+      "center": [
+        54.5,
+        45.74
+      ],
+      "floor": [
+        44.5,
+        11.0,
+        20.0,
+        39.0
+      ],
+      "plug": [
+        44.5,
+        9.0,
+        35.0,
+        20.0,
+        31.0,
+        12.0
+      ],
+      "base": [
+        52.5,
+        37.5,
+        24.0,
+        27.5
+      ],
+      "underside_channel": [
+        0.0,
+        45.25,
+        69.5,
+        12.0,
+        8.0
+      ]
+    },
+    {
+      "id": "CN7",
+      "role": "USB_OTG_FLASH",
+      "center": [
+        58.225,
+        135.26
+      ],
+      "floor": [
+        48.225,
+        130.0,
+        20.0,
+        39.0
+      ],
+      "plug": [
+        48.225,
+        141.0,
+        35.0,
+        20.0,
+        31.0,
+        12.0
+      ],
+      "base": [
+        56.225,
+        97.0,
+        24.0,
+        27.5
+      ],
+      "underside_channel": [
+        0.0,
+        104.75,
+        73.225,
+        12.0,
+        8.0
+      ]
+    },
+    {
+      "id": "CN11",
+      "role": "STLINK_TTY",
+      "center": [
+        83.2,
+        115.5
+      ],
+      "floor": [
+        77.0,
+        105.5,
+        38.0,
+        20.0
+      ],
+      "plug": [
+        86.0,
+        105.5,
+        35.0,
+        31.0,
+        20.0,
+        12.0
+      ],
+      "base": [
+        85.0,
+        84.75,
+        42.0,
+        18.0
+      ],
+      "underside_channel": [
+        0.0,
+        87.75,
+        111.0,
+        12.0,
+        8.0
+      ]
+    }
+  ],
+  "nominal_plug_clearance_overlap_mm3": {
+    "CN6/tray": 0.0,
+    "CN6/front_panel": 0.0,
+    "CN6/cassette": 0.0,
+    "CN7/tray": 0.0,
+    "CN7/front_panel": 0.0,
+    "CN7/cassette": 0.0,
+    "CN11/tray": 0.0,
+    "CN11/front_panel": 0.0,
+    "CN11/cassette": 0.0
+  },
+  "tray_and_base_routes_open": true,
+  "base_underside_channels_open_to_left_edge": true,
+  "mount_type": "three headed keys + 12 mm slide + spring catch",
+  "body_to_stand_screw_count": 0,
+  "key_centers_case_mm": [
+    [
+      8.0,
+      30.0
+    ],
+    [
+      182.0,
+      30.0
+    ],
+    [
+      112.0,
+      155.0
+    ]
+  ],
+  "latch_receiver_case_mm": [
+    131.5,
+    159.5,
+    7,
+    7
+  ],
+  "released_motion_overlap_mm3": {
+    "released_slide_0": 0.0,
+    "released_slide_2": 0.0,
+    "released_slide_4": 0.0,
+    "released_slide_6": 0.0,
+    "released_slide_8": 0.0,
+    "released_slide_10": 0.0,
+    "released_slide_12": 0.0,
+    "released_lift_1": 0.0,
+    "released_lift_3": 0.0,
+    "released_lift_6.5": 0.0
+  },
+  "locked_motion_interference_mm3": {
+    "upward_slide_2mm": 4.3875,
+    "normal_lift_1mm": 28.4858
+  },
+  "snap_test_pair_overlap_mm3": 0.0,
+  "spring_bending_or_life_tested": false,
+  "spring_free_section_support_overlap_mm3": 0.0,
+  "brass_body_overlap_mm3": {
+    "1/tray": 0.0,
+    "1/lid": 0.0,
+    "1/cassette": 0.0,
+    "2/tray": 0.0,
+    "2/lid": 0.0,
+    "2/cassette": 0.0,
+    "3/tray": 0.0,
+    "3/lid": 0.0,
+    "3/cassette": 0.0,
+    "4/tray": 0.0,
+    "4/lid": 0.0,
+    "4/cassette": 0.0
+  },
+  "brass_socket_spec": {
+    "measured_af": 5,
+    "body_length": 30,
+    "socket_af": 5.3,
+    "socket_depth": 8,
+    "seat_z": 3,
+    "pcb_bottom_z": 33,
+    "center_relief_d": 3.5
+  },
+  "mic_eagle_reference": {
+    "pcb_outline_mm": [
+      25.4,
+      14.097
+    ],
+    "holes_mm": [
+      [
+        23.368,
+        2.032
+      ],
+      [
+        23.368,
+        12.065
+      ]
+    ],
+    "hole_drill_mm": 2.2,
+    "capsule_center_mm": [
+      18.161,
+      7.112
+    ]
+  }
+}
