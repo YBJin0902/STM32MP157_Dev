@@ -1,0 +1,34 @@
+{
+  "01_tray": {
+    "closed_edge_manifold": true,
+    "triangles": 13528
+  },
+  "02_front_panel": {
+    "closed_edge_manifold": true,
+    "triangles": 9288
+  },
+  "03_60deg_stand": {
+    "closed_edge_manifold": true,
+    "triangles": 4760
+  },
+  "04_speaker_cassette": {
+    "closed_edge_manifold": true,
+    "triangles": 2304
+  },
+  "05_mic_fit_coupon_OPTIONAL": {
+    "closed_edge_manifold": true,
+    "triangles": 4444
+  },
+  "06_snap_receiver_TEST": {
+    "closed_edge_manifold": true,
+    "triangles": 484
+  },
+  "07_snap_base_TEST": {
+    "closed_edge_manifold": true,
+    "triangles": 812
+  },
+  "08_hex_socket_TEST": {
+    "closed_edge_manifold": true,
+    "triangles": 2246
+  }
+}
