@@ -521,6 +521,215 @@ minicom -D /dev/ttyACM0         # 連接板子 Serial port
 
 #### Wi-Fi 功能
 
+STM32MP157F-DK2 開發板內建 Wi-Fi 無線通訊模組，支援 IEEE 802.11 b/g/n 無線網路標準，透過 SDIO 介面與 STM32MP157F 處理器進行資料傳輸。
+
+Linux 系統使用 brcmfmac 驅動程式控制 Broadcom 無線晶片，並搭配 Firmware、wpa_supplicant 及 DHCP 用戶端完成無線網路連線。
+
+```mermaid
+flowchart TB
+    subgraph APP["Linux User Space"]
+        direction TB
+        USER["Wi-Fi 管理程式 / 應用程式"]
+        WPA["wpa_supplicant<br/>無線網路驗證與連線"]
+        DHCP["DHCP Client<br/>取得 IP 位址"]
+        USER --> WPA
+        WPA --> DHCP
+    end
+
+    subgraph KERNEL["Linux Kernel 6.6.129"]
+        direction TB
+        CFG["cfg80211<br/>無線網路管理"]
+        BRCM["brcmfmac<br/>Broadcom Wi-Fi Driver"]
+        SDIO["SDIO / MMC Subsystem"]
+        CFG --> BRCM --> SDIO
+    end
+
+    subgraph HARDWARE["STM32MP157F-DK2"]
+        direction TB
+        WIFI["Broadcom BCM43430<br/>Wi-Fi 模組"]
+        RF["Wi-Fi 無線網路"]
+        WIFI --> RF
+    end
+
+    WPA --> CFG
+    DHCP -.->|"IP 設定"| CFG
+    SDIO --> WIFI
+
+    classDef software fill:#263238,stroke:#90A4AE,color:#FFFFFF
+    classDef hardware fill:#1B5E20,stroke:#81C784,color:#FFFFFF
+
+    class USER,WPA,DHCP,CFG,BRCM,SDIO software
+    class WIFI,RF hardware
+
+    style APP fill:#17212B,stroke:#607D8B,color:#FFFFFF
+    style KERNEL fill:#17212B,stroke:#607D8B,color:#FFFFFF
+    style HARDWARE fill:#17212B,stroke:#81C784,color:#FFFFFF
+```
+
+</br>
+
+自行編譯的 Yocto Linux 已可正常開機，但執行 iw dev 時沒有顯示任何 Wi-Fi 網路介面。(若是使用官方所提供的 image 應該不會有這個問題)
+
+</br>
+
+確認系統資訊
+
+```bash
+uname -a
+
+tr -d '\0' < /proc/device-tree/model
+echo
+```
+
+</br>
+
+確認 Wi-Fi 驅動程式
+
+```bash
+lsmod | grep -E 'brcm|cfg80211'
+```
+
+</br>
+
+確認 SDIO 是否偵測到晶片
+
+```bash
+dmesg | grep -iE 'mmc|sdio|brcmfmac'
+```
+
+```
+mmc1: new high speed SDIO card at address 0001
+
+brcmfmac: brcmf_fw_alloc_request:
+using brcm/brcmfmac43430-sdio for chip BCM43430/1
+```
+
+</br>
+
+Yocto 加入 Firmware 與網路工具
+
+local.conf
+
+```
+IMAGE_INSTALL:append = " \
+    linux-firmware-bcm43430 \
+    iw \
+    wpa-supplicant \
+    wireless-regdb \
+"
+```
+
+| 套件                        | 功能                         |
+| :------------------------- | :-------------------------- |
+| `linux-firmware-bcm43430` | 提供 BCM43430 Wi-Fi Firmware |
+| `iw`                      | Wi-Fi 介面掃描與管理工具            |
+| `wpa-supplicant`          | WPA/WPA2 無線網路驗證            |
+| `wireless-regdb`          | 無線頻段與法規資料                  |
+
+</br>
+
+板級 NVRAM 設定檔名稱不符合 Kernel 預期的問題。
+使用既有的 Murata 1DX 設定檔建立 Symbolic Link：
+
+```bash
+cd /lib/firmware/brcm
+
+ln -s \
+  brcmfmac43430-sdio.MUR1DX.txt \
+  brcmfmac43430-sdio.st,stm32mp157f-dk2.txt
+```
+
+完成後重新載入驅動：
+
+```
+modprobe -r brcmfmac
+modprobe brcmfmac
+```
+
+</br>
+
+Wi-Fi 連線設定
+
+啟動 Wi-Fi 介面
+
+```
+ip link set wlan0 up
+
+iw dev wlan0 scan | grep SSID
+```
+
+</br>
+
+建立 WPA 設定檔
+
+使用的設定檔位置為：
+`/etc/wpa_supplicant/wlan0.conf`
+首先建立資料夾與必要設定：
+
+```
+mkdir -p /etc/wpa_supplicant
+mkdir -p /run/wpa_supplicant
+
+cat > /etc/wpa_supplicant/wlan0.conf <<'EOF'
+ctrl_interface=/run/wpa_supplicant
+update_config=1
+EOF
+```
+
+接著加入 Wi-Fi 網路資訊：
+
+```
+wpa_passphrase "YOUR_WIFI_SSID" \
+  | sed '/^[[:space:]]*#psk=/d' \
+  >> /etc/wpa_supplicant/wlan0.conf
+
+chmod 600 /etc/wpa_supplicant/wlan0.conf
+```
+
+執行 `wpa_passphrase` 時輸入 Wi-Fi 密碼。上述方式會儲存計算後的 PSK，並移除包含明文密碼的註解行。
+
+</br>
+
+啟動 wpa_supplicant
+
+```
+wpa_supplicant -B \
+  -i wlan0 \
+  -c /etc/wpa_supplicant/wlan0.conf
+```
+
+參數說明：
+
+| 參數         | 功能           |
+| ---------- | ------------ |
+| `-B`       | 背景執行         |
+| `-i wlan0` | 指定無線網路介面     |
+| `-c`       | 指定 Wi-Fi 設定檔 |
+
+確認網路連線：
+
+```
+iw dev wlan0 link
+```
+
+若顯示 `Connected to` 及對應 SSID，表示已成功連接無線基地台。
+
+</br>
+
+DHCP 取得 IP
+
+透過 BusyBox 的 `udhcpc` 取得 IP：
+
+```
+udhcpc -i wlan0 -n -q
+
+ip -4 addr show dev wlan0
+```
+
+</br>
+
+
+
 </br>
 
 ## 參考資料
